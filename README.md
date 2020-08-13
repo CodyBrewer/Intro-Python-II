@@ -2,17 +2,15 @@
 
 Up to this point, you've gotten your feet wet by working on a bunch of small Python programs. In this module, we're going to continue to solidify your Python chops by implementing a full-featured project according to a provided specification.
 
-
 ## What We're Building
-[What's an Adventure Game? ![vid](https://tk-assets.lambdaschool.com/7928cdb4-b8a3-45a6-b231-5b9d1fc1e002_ScreenShot2019-03-22at5.47.28PM.png)](https://youtu.be/WaZccFqJUT8)
 
+[What's an Adventure Game? ![vid](https://tk-assets.lambdaschool.com/7928cdb4-b8a3-45a6-b231-5b9d1fc1e002_ScreenShot2019-03-22at5.47.28PM.png)](https://youtu.be/WaZccFqJUT8)
 
 ## Goals
 
 * Put your Python basics into practice by implementing a text adventure game
 
 * Practice writing code that conforms to a specification
-
 
 ## MVP
 
@@ -33,7 +31,6 @@ Up to this point, you've gotten your feet wet by working on a bunch of small Pyt
 
 The `/src` directory contains the files `adv.py`, which is where the main logic for the game should live, `room.py`, which will contain the definition of the Room class, and `player.py`, which will contain the definition of the Player class.
 
-
 * Add a REPL parser to `adv.py` that accepts directional commands to move the player
   * After each move, the REPL should print the name and description of the player's current room
   * Valid commands are `n`, `s`, `e` and `w` which move the player North, South, East or West
@@ -49,12 +46,11 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 * Put the Player class in `player.py`.
   * Players should have a `name` and `current_room` attributes
 
-
 * Create a file called `item.py` and add an `Item` class in there.
 
   * The item should have `name` and `description` attributes.
 
-     * Hint: the name should be one word for ease in parsing later.
+    * Hint: the name should be one word for ease in parsing later.
 
   * This will be the _base class_ for specialized item types to be declared
     later.
@@ -94,27 +90,26 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
   * If the user enters `get` or `take` followed by an `Item` name, look at the
     contents of the current `Room` to see if the item is there.
 
-     * If it is there, remove it from the `Room` contents, and add it to the
+    * If it is there, remove it from the `Room` contents, and add it to the
        `Player` contents.
 
-     * If it's not there, print an error message telling the user so.
+    * If it's not there, print an error message telling the user so.
 
-     * Add an `on_take` method to `Item`.
+    * Add an `on_take` method to `Item`.
 
-        * Call this method when the `Item` is picked up by the player.
+      * Call this method when the `Item` is picked up by the player.
 
         * `on_take` should print out "You have picked up [NAME]" when you pick up an item.
 
         * The `Item` can use this to run additional code when it is picked up.
 
-     * Add an `on_drop` method to `Item`. Implement it similar to `on_take`.
+    * Add an `on_drop` method to `Item`. Implement it similar to `on_take`.
 
 * Implement support for the verb `drop` followed by an `Item` name. This is the
   opposite of `get`/`take`.
 
 * Add the `i` and `inventory` commands that both show a list of items currently
   carried by the player.
-
 
 ## Stretch Goals
 
@@ -166,7 +161,7 @@ In arbitrary order:
   * Remember the last `Item` mentioned and substitute that if the user types
     "it" later, e.g.
 
-    ```
+    ```pseudocode
     take sword
     drop it
     ```
