@@ -16,7 +16,7 @@ import world
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-move = ('n', 's', 'e', 'w')
+move = ('n', 's', 'e', 'w', 'north', 'south', 'east', 'west')
 take_item_actions = ('get', 'take', 'pickup')
 drop_item_actions = ('drop', 'putdown')
 
@@ -41,25 +41,25 @@ def deadend():
 # Move player
 def move_player(action):
     # move north
-    if action == 'n':
+    if action in ['n', 'north']:
         if hasattr(player.room, 'n_to'):
             player.room = player.room.n_to
         else:
             deadend()
     # move south
-    elif action == 's':
+    elif action in ['s', 'south']:
         if hasattr(player.room, 's_to'):
             player.room = player.room.s_to
         else:
             deadend()
     # move east
-    elif action == 'e':
+    elif action in ['e', 'east']:
         if hasattr(player.room, 'e_to'):
             player.room = player.room.e_to
         else:
             deadend()
     # move west
-    elif action == 'w':
+    elif action in ['w', 'west']:
         if hasattr(player.room, 'w_to'):
             player.room = player.room.w_to
         else:
@@ -103,7 +103,7 @@ def take_item(action, target):
         print(f'Item not here')
 
 # drop item logic
-def drop_item():
+def drop_item(action):
     pass
 
 # Start game
