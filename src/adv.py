@@ -1,40 +1,6 @@
-from room import Room
 from player import Player
+import world
 
-# Declare all the rooms
-
-room = {
-    'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
-
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
-
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
-into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
-
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
-
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
-}
-
-
-# Link rooms together
-
-room['outside'].n_to = room['foyer']
-room['foyer'].s_to = room['outside']
-room['foyer'].n_to = room['overlook']
-room['foyer'].e_to = room['narrow']
-room['overlook'].s_to = room['foyer']
-room['narrow'].w_to = room['foyer']
-room['narrow'].n_to = room['treasure']
-room['treasure'].s_to = room['narrow']
-
-#
 # Main
 #
 
@@ -51,8 +17,12 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 move = ('n', 's', 'e', 'w')
-player = Player('', room['outside'])
+take_item_actions = ('get', 'take', 'pickup')
+drop_item_actions = ('drop', 'putdown')
 
+player = Player('', world.room['outside'])
+
+# Intro to game
 def start_game():
     print("Welcome to Lost Settler's Cave!")
     print("What is your name adventurer?")
@@ -61,12 +31,14 @@ def start_game():
     print(f"{player.name} you said? Ah what a great name for a great explorer!")
     print("I bet you're here to search for the pioneers lost treasure from when they crash landed on this here planet.")
     print("To move around the cave use cardinal directions: n, s, e, w.")
-    print("Type x to use your escape rope and escape from the cave quickly")
-    print("Type q to quit the game")
+    print("Enter x or escape to use your escape rope and escape from the cave quickly")
+    print("Enter q or quit  to quit the game")
 
+# Can't move
 def deadend():
     print('You walk in that direction, but realize it is a dead end.\n')
 
+# Move player
 def move_player(action):
     # move north
     if action == 'n':
@@ -93,12 +65,48 @@ def move_player(action):
         else:
             deadend()
 
+# Game credits
 def end_game():
     print(f"Thank you {player.name} for playing an adventure in Lost Settler's Cave!")
     print(f'Credits\n Developed by Cody Brewer\n')
     print(f"Follow me on github to see what else I build! Github: @CodyBrewer")
-    
 
+# Search room logic
+def search():
+    output = ''
+    count = 1
+    if len(player.room.items) > 0:
+        for item in player.room.items:
+            output += f'{count}. {item.name}\n'
+            count += 1
+        print(f'You search around and find:\n{output}')
+    else:
+        print(f'You search around and find nothing of value.')
+
+def check_backpack():
+    output = ''
+    count = 1
+    if len(player.items) > 0:
+        for item in player.items:
+            output += f'{count}. {item}\n'
+            count += 1
+            print(f'In your backpack you find: \n{output}')
+    else:
+        print(f'You find nothing in your backpack')
+
+# take item logic
+def take_item(action, target):
+    if target in world.item:
+        target_item = world.item.get(target)
+        target_item.on_take_room(player)
+    else:
+        print(f'Item not here')
+
+# drop item logic
+def drop_item():
+    pass
+
+# Start game
 start_game()
 
 while True:
@@ -108,13 +116,22 @@ while True:
     player_move = input("Enter your move:")
     # sanitize move
     player_move = player_move.lower().split(" ", 1)
-
     action = player_move[0]
-    if action == 'q':
+    if len(player_move) == 1:
+        target = ""
+    else:
+        target = player_move[1]
+
+    if action in ['q', 'quit']:
         end_game()
         break
-    if action == 'x':
-        player.room = room['outside']
-    if action in move:
+    elif action in ['x', 'escape']:
+        player.room = world.room['outside']
+    elif action in ['l', 'look']:
+        search()
+    elif action in move:
         move_player(action)
-    
+    elif action in ['b', 'backpack']:
+        check_backpack()
+    elif action in take_item_actions:
+        take_item(action, target)
