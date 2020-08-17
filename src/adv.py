@@ -103,8 +103,13 @@ def take_item(action, target):
         print(f'Item not here')
 
 # drop item logic
-def drop_item(action):
-    pass
+def drop_item(action, target):
+    if target in world.item:
+        target_item = world.item.get(target)
+        if target_item in player.items:
+            target_item.on_drop_room(player)
+        else:
+            print("You don't have that item to drop")
 
 # Start game
 start_game()
@@ -135,3 +140,5 @@ while True:
         check_backpack()
     elif action in take_item_actions:
         take_item(action, target)
+    elif action in drop_item_actions:
+        drop_item(action, target)
