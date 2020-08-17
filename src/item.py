@@ -9,7 +9,6 @@ class Item:
         return f'{self.name}, {self.description}'
 
     def on_take_room(self, player):
-        print('heloo')
         print(f'\n{self.take_message}')
         player.items.append(self)
         player.room.items.remove(self)
